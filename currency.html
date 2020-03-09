@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <h3>Base currency:{{ base.base }} </h3>
+        <h4>Date: {{ base.date }}</h4>
+        <table>
+         <tr>
+            <th>Currencies</th>
+            <th>Market Value</th>
+        </tr>
+        <tr v-for="(currency, marketValue) in list">
+            <td> {{ marketValue }} </td>
+            <td> {{ currency }} </td>
+        </tr>
+        </table>
+    </div>
+    <script>
+
+        new Vue({
+            el:'#app',
+
+            data(){
+                return{
+                    list: null,
+                    base: null,
+                }
+            },
+            mounted() {
+                axios
+                .get('https://api.exchangeratesapi.io/latest')
+                .then((response) => {
+                    this.list = response.data.rates;
+                    this.base = response.data
+                })
+            }
+
+        })
+
+    </script>
+</body>
+</html>
